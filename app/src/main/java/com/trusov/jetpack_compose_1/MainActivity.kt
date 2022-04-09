@@ -10,6 +10,7 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -29,24 +30,12 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            val setContentMessage = "Hello setContent"
-            Column {
-                val columnMessage = "Hello Column"
-                Row {
-                    Text(text = setContentMessage, fontSize = 28.sp)
-                }
-                Row {
-                    Text(text = columnMessage, fontSize = 28.sp)
-                }
-                Row {
-                    val rowMessage = "Hello Row 1"
-                    Text(text = rowMessage, fontSize = 28.sp)
-                }
-                Row {
-                    val rowMessage = "Hello Row 2"
-                    Text(text = rowMessage, fontSize = 28.sp)
-                }
-            }
+            val message: MutableState<String> = remember{mutableStateOf("Hello Jetpack")}
+            Text(
+                text = message.value,
+                fontSize = 28.sp,
+                modifier = Modifier.clickable( onClick = { message.value = "Hello Work!" })
+            )
         }
     }
 }
