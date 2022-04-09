@@ -3,31 +3,54 @@ package com.trusov.jetpack_compose_1
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.*
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontFamily
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.TextUnit
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.trusov.jetpack_compose_1.ui.theme.Jetpack_compose_1Theme
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            Jetpack_compose_1Theme {
-                // A surface container using the 'background' color from the theme
-                Surface(
-                    modifier = Modifier.fillMaxSize(),
-                    color = MaterialTheme.colors.background
-                ) {
-                    Greeting("Android")
+            val setContentMessage = "Hello setContent"
+            Column {
+                val columnMessage = "Hello Column"
+                Row {
+                    Text(text = setContentMessage, fontSize = 28.sp)
+                }
+                Row {
+                    Text(text = columnMessage, fontSize = 28.sp)
+                }
+                Row {
+                    val rowMessage = "Hello Row 1"
+                    Text(text = rowMessage, fontSize = 28.sp)
+                }
+                Row {
+                    val rowMessage = "Hello Row 2"
+                    Text(text = rowMessage, fontSize = 28.sp)
                 }
             }
         }
     }
 }
+
 
 @Composable
 fun Greeting(name: String) {
