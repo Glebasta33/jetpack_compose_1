@@ -38,16 +38,44 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            var checked = remember{ mutableStateOf(false)}
-            Text(
-                modifier = Modifier.toggleable(
-                    value = checked.value,
-                    onValueChange = {checked.value = it}
-                ),
-                text = checked.value.toString()
-            )
+
+            val checkedState = remember { mutableStateOf(false) }
+
+            Column(
+                horizontalAlignment = Alignment.CenterHorizontally,
+                modifier = Modifier.padding(bottom = 100.dp)
+            ) {
+
+                Box(
+                    modifier = Modifier
+                        .height(360.dp)
+                        .fillMaxWidth()
+                        .background(setBoxColor(checkedState.value))
+                )
+
+                Row(
+                    horizontalArrangement = Arrangement.Center,
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Checkbox(
+                        checked = checkedState.value,
+                        onCheckedChange = { checkedState.value = it },
+                        modifier = Modifier.size(40.dp),
+                        colors = CheckboxDefaults.colors(checkedColor = Color.Red)
+                    )
+                    Text(text = "Выбрано", fontSize = 22.sp)
+                }
+
+            }
+
+
         }
     }
+
+    private fun setBoxColor(checkedState: Boolean): Color {
+        return if (checkedState) Color.Red else Color.Blue
+    }
+
 }
 
 
