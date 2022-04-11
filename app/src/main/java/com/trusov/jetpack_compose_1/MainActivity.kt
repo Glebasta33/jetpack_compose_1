@@ -6,7 +6,11 @@ import androidx.activity.compose.setContent
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Check
+import androidx.compose.material.icons.filled.Info
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
@@ -18,6 +22,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shadow
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontFamily
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.text.style.TextGeometricTransform
@@ -59,10 +64,20 @@ class MainActivity : ComponentActivity() {
                         .padding(56.dp)
                 )
 
+                val textInField = remember{ mutableStateOf("")}
 
-                val index = remember{ mutableStateOf(0)}
+                TextField(value = textInField.value, onValueChange = { newText ->
+                    textInField.value = newText
+                },
+                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+                    leadingIcon = { Icon(Icons.Filled.Check, contentDescription = "Проверено") },
+                    trailingIcon = { Icon(Icons.Filled.Info, contentDescription = "Дополнительная информация") },
+                    placeholder = { Text("Hello Work!") },
+                    colors = TextFieldDefaults.textFieldColors(textColor = Color.Yellow, backgroundColor = Color.Green),
+                    modifier = Modifier.fillMaxWidth())
+
                 Button(
-                    onClick = {message.value = "Hello Work! Hello Work! Hello Work! ${index.value++}"},
+                    onClick = {message.value = textInField.value},
                     modifier = Modifier.fillMaxWidth(),
                     colors = ButtonDefaults.buttonColors(backgroundColor = Color.Black, contentColor = Color.Cyan),
                     border = BorderStroke(10.dp, Color.LightGray)
