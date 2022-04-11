@@ -21,6 +21,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shadow
+import androidx.compose.ui.state.ToggleableState
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.input.KeyboardType
@@ -57,13 +58,17 @@ class MainActivity : ComponentActivity() {
                     horizontalArrangement = Arrangement.Center,
                     verticalAlignment = Alignment.CenterVertically
                 ) {
-                    Checkbox(
-                        checked = checkedState.value,
-                        onCheckedChange = { checkedState.value = it },
-                        modifier = Modifier.size(40.dp),
-                        colors = CheckboxDefaults.colors(checkedColor = Color.Red)
+                    val checkedState = remember { mutableStateOf(ToggleableState.Indeterminate) }
+                    TriStateCheckbox(
+                        state = checkedState.value,
+                        onClick = {
+                            if (checkedState.value == ToggleableState.Indeterminate || checkedState.value == ToggleableState.Off)
+                                checkedState.value = ToggleableState.On
+                            else checkedState.value = ToggleableState.Off
+                        },
+                        modifier = Modifier.padding(5.dp),
                     )
-                    Text(text = "Выбрано", fontSize = 22.sp)
+                    Text("Выбрано", fontSize = 22.sp)
                 }
 
             }
