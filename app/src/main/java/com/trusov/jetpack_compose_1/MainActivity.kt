@@ -6,9 +6,7 @@ import androidx.activity.compose.setContent
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Surface
-import androidx.compose.material.Text
+import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
@@ -35,25 +33,53 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             val message: MutableState<String> = remember { mutableStateOf("Hello Jetpack") }
-            Text(
-                text = message.value,
-                color = Color.DarkGray,
-                fontSize = 40.sp,
-                overflow = TextOverflow.Ellipsis,
-                fontFamily = FontFamily.Cursive,
-                style = TextStyle(
-                    textGeometricTransform = TextGeometricTransform(scaleX = 2f),
-                    shadow = Shadow(
-                        color = Color.LightGray,
-                        offset = Offset(19.0f, 20.0f),
-                        blurRadius = 2.0f
-                    )
-                ),
-                modifier = Modifier.clickable(onClick = { message.value = "Hello Work! Hello Work! Hello Work!" })
-                    .padding(32.dp)
-                    .background(Color.Yellow)
-                    .padding(32.dp)
-            )
+            Column(
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                Text(
+                    text = message.value,
+                    color = Color.DarkGray,
+                    fontSize = 40.sp,
+                    overflow = TextOverflow.Ellipsis,
+                    fontFamily = FontFamily.Cursive,
+                    style = TextStyle(
+                        textGeometricTransform = TextGeometricTransform(scaleX = 2f),
+                        shadow = Shadow(
+                            color = Color.LightGray,
+                            offset = Offset(19.0f, 20.0f),
+                            blurRadius = 2.0f
+                        )
+                    ),
+                    modifier = Modifier
+                        .clickable(onClick = {
+                            message.value = "Hello Work! Hello Work! Hello Work!"
+                        })
+                        .fillMaxWidth()
+                        .background(Color.Yellow)
+                        .padding(56.dp)
+                )
+
+
+                val index = remember{ mutableStateOf(0)}
+                Button(
+                    onClick = {message.value = "Hello Work! Hello Work! Hello Work! ${index.value++}"},
+                    modifier = Modifier.fillMaxWidth(),
+                    colors = ButtonDefaults.buttonColors(backgroundColor = Color.Black, contentColor = Color.Cyan),
+                    border = BorderStroke(10.dp, Color.LightGray)
+                ) {
+                    Row(horizontalArrangement = Arrangement.SpaceEvenly,
+                        verticalAlignment = Alignment.CenterVertically,
+                        modifier = Modifier.fillMaxWidth()) {
+                        Text(text = "Click", fontSize = 25.sp)
+                        Text(text = "1", fontSize = 25.sp)
+                        Text(text = "2", fontSize = 32.sp)
+                        Text(text = "3", fontSize = 48.sp)
+                    }
+
+                }
+            }
+
+
         }
     }
 }
