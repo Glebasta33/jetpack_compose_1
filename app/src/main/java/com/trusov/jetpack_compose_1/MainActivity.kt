@@ -5,6 +5,7 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.selection.toggleable
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
@@ -37,64 +38,14 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            val message: MutableState<String> = remember { mutableStateOf("Hello Jetpack") }
-            Column(
-                horizontalAlignment = Alignment.CenterHorizontally
-            ) {
-                Text(
-                    text = message.value,
-                    color = Color.DarkGray,
-                    fontSize = 40.sp,
-                    overflow = TextOverflow.Ellipsis,
-                    fontFamily = FontFamily.Cursive,
-                    style = TextStyle(
-                        textGeometricTransform = TextGeometricTransform(scaleX = 2f),
-                        shadow = Shadow(
-                            color = Color.LightGray,
-                            offset = Offset(19.0f, 20.0f),
-                            blurRadius = 2.0f
-                        )
-                    ),
-                    modifier = Modifier
-                        .clickable(onClick = {
-                            message.value = "Hello Work! Hello Work! Hello Work!"
-                        })
-                        .fillMaxWidth()
-                        .background(Color.Yellow)
-                        .padding(56.dp)
-                )
-
-                val textInField = remember{ mutableStateOf("")}
-
-                TextField(value = textInField.value, onValueChange = { newText ->
-                    textInField.value = newText
-                },
-                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
-                    leadingIcon = { Icon(Icons.Filled.Check, contentDescription = "Проверено") },
-                    trailingIcon = { Icon(Icons.Filled.Info, contentDescription = "Дополнительная информация") },
-                    placeholder = { Text("Hello Work!") },
-                    colors = TextFieldDefaults.textFieldColors(textColor = Color.Yellow, backgroundColor = Color.Green),
-                    modifier = Modifier.fillMaxWidth())
-
-                Button(
-                    onClick = {message.value = textInField.value},
-                    modifier = Modifier.fillMaxWidth(),
-                    colors = ButtonDefaults.buttonColors(backgroundColor = Color.Black, contentColor = Color.Cyan),
-                    border = BorderStroke(10.dp, Color.LightGray)
-                ) {
-                    Row(horizontalArrangement = Arrangement.SpaceEvenly,
-                        verticalAlignment = Alignment.CenterVertically,
-                        modifier = Modifier.fillMaxWidth()) {
-                        Text(text = "Click", fontSize = 25.sp)
-                        Text(text = "1", fontSize = 25.sp)
-                        Text(text = "2", fontSize = 32.sp)
-                        Text(text = "3", fontSize = 48.sp)
-                    }
-
-                }
-            }
-
-
+            var checked = remember{ mutableStateOf(false)}
+            Text(
+                modifier = Modifier.toggleable(
+                    value = checked.value,
+                    onValueChange = {checked.value = it}
+                ),
+                text = checked.value.toString()
+            )
         }
     }
 }
