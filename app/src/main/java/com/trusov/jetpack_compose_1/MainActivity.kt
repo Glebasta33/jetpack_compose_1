@@ -5,6 +5,7 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.selection.selectable
 import androidx.compose.foundation.selection.toggleable
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.text.KeyboardOptions
@@ -39,38 +40,27 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
+            val colors = listOf(Color.Red, Color.Green, Color.Blue)
+            val selectedOption = remember { mutableStateOf(colors[0]) }
+            Column(modifier =Modifier.padding(20.dp)) {
+                Box( Modifier.padding(10.dp).size(100.dp).background(color = selectedOption.value))
 
-            val checkedState = remember { mutableStateOf(false) }
-
-            Column(
-                horizontalAlignment = Alignment.CenterHorizontally,
-                modifier = Modifier.padding(bottom = 100.dp)
-            ) {
-
-                Box(
-                    modifier = Modifier
-                        .height(360.dp)
-                        .fillMaxWidth()
-                        .background(setBoxColor(checkedState.value))
-                )
-
-                Row(
-                    horizontalArrangement = Arrangement.Center,
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    val checkedState = remember { mutableStateOf(ToggleableState.Indeterminate) }
-                    TriStateCheckbox(
-                        state = checkedState.value,
-                        onClick = {
-                            if (checkedState.value == ToggleableState.Indeterminate || checkedState.value == ToggleableState.Off)
-                                checkedState.value = ToggleableState.On
-                            else checkedState.value = ToggleableState.Off
-                        },
-                        modifier = Modifier.padding(5.dp),
+                colors.forEach { color ->
+                    val selected = selectedOption.value == color
+                    Box(
+                        Modifier.padding(8.dp)
+                            .size(60.dp)
+                            .background(color = color)
+                            .selectable(
+                                selected = selected,
+                                onClick = { selectedOption.value = color }
+                            )
+                            .border(
+                                width= if(selected){2.dp} else{0.dp},
+                                color = Color.Black
+                            )
                     )
-                    Text("Выбрано", fontSize = 22.sp)
                 }
-
             }
 
 
