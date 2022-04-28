@@ -32,19 +32,30 @@ import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.trusov.jetpack_compose_1.ui.theme.Jetpack_compose_1Theme
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            var sliderPosition by remember{mutableStateOf(0f)}
-            Column{
-                Text(text = "Текущее значение: ${sliderPosition}", fontSize = 22.sp)
-                Slider(
-                    value = sliderPosition,
-                    onValueChange = { sliderPosition = it }
-                )
+            val isVisible = remember { mutableStateOf(false) }
+
+            Column(
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.Center ,
+                modifier = Modifier.fillMaxSize()
+            ){
+                OutlinedButton(
+                    onClick = {
+                        isVisible.value = !isVisible.value
+                    }
+                ) {
+                    Text(text = if(isVisible.value) "Скрыть" else "Показать", fontSize = 22.sp)
+                }
+                if (isVisible.value) {
+                    CircularProgressIndicator()
+                }
             }
         }
     }
