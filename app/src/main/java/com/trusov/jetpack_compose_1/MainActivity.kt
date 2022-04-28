@@ -38,24 +38,13 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            val scaffoldState = rememberScaffoldState()
-            val scope = rememberCoroutineScope()
-
-            Scaffold(
-                scaffoldState = scaffoldState,
-                drawerContent={
-                    Text("Пункт меню 1", fontSize = 28.sp)
-                    Text("Пункт меню 2", fontSize = 28.sp)
-                    Text("Пункт меню 3", fontSize = 28.sp)
-                }
-            ){
-                Button(onClick = {
-                    scope.launch{
-                        scaffoldState.drawerState.open()
-                    }
-                }) {
-                    Text("Меню", fontSize = 28.sp)
-                }
+            var sliderPosition by remember{mutableStateOf(0f)}
+            Column{
+                Text(text = "Текущее значение: ${sliderPosition}", fontSize = 22.sp)
+                Slider(
+                    value = sliderPosition,
+                    onValueChange = { sliderPosition = it }
+                )
             }
         }
     }
