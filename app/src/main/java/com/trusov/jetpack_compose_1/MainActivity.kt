@@ -18,7 +18,13 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.graphics.Shadow
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.colorResource
+import androidx.compose.ui.res.dimensionResource
+import androidx.compose.ui.res.imageResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.state.ToggleableState
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontFamily
@@ -31,6 +37,13 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
+import com.trusov.jetpack_compose_1.screens.DetailsScreen
+import com.trusov.jetpack_compose_1.screens.ListScreen
+import com.trusov.jetpack_compose_1.screens.PushScreen
+import com.trusov.jetpack_compose_1.screens.SearchScreen
 import com.trusov.jetpack_compose_1.ui.theme.Jetpack_compose_1Theme
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -39,22 +52,31 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            val isVisible = remember { mutableStateOf(false) }
-
-            Column(
-                horizontalAlignment = Alignment.CenterHorizontally,
-                verticalArrangement = Arrangement.Center ,
-                modifier = Modifier.fillMaxSize()
-            ){
-                OutlinedButton(
-                    onClick = {
-                        isVisible.value = !isVisible.value
+            val navController = rememberNavController()
+            val bottomItems = listOf("list", "search", "push")
+            Scaffold(
+                bottomBar = {
+                    BottomNavigation {
+                        bottomItems.forEach { screen ->
+                            BottomNavigationItem(
+                                selected = false,
+                                onClick = { navController.navigate(screen) },
+                                label = { Text(screen) },
+                                icon = {}
+                            )
+                        }
                     }
-                ) {
-                    Text(text = if(isVisible.value) "Скрыть" else "Показать", fontSize = 22.sp)
                 }
-                if (isVisible.value) {
-                    CircularProgressIndicator()
+            ) {
+                NavHost(
+                    navController = navController,
+                    startDestination = "list"
+                ) {
+                    composable("list") { ListScreen(navController) }
+                    composable("search") { SearchScreen() }
+                    composable("push") { PushScreen() }
+                    composable("details/{text}") { backStackEntry ->
+                        DetailsScreen(backStackEntry.arguments?.getString("text")) }
                 }
             }
         }
